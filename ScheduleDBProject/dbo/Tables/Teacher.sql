@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[Teacher]
+(
+	[TeacherId] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	[FirstName] NVARCHAR(50) NOT NULL,
+	[LastName] NVARCHAR(50) NOT NULL,
+	[MaxClasses] TINYINT NOT NULL CHECK([MaxClasses] BETWEEN 1 AND 8)
+)

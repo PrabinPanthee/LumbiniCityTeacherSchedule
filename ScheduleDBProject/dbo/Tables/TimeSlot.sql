@@ -2,6 +2,7 @@
 (
 	[TimeSlotId] INT NOT NULL PRIMARY KEY IDENTITY (1,1),
 	[SemesterInstanceId] INT NOT NULL,
+	[PeriodNumber] TINYINT NOT NULL,
 	[StartTime] Time NOT NULL,
 	[EndTime] Time NOT NULL,
 	[Type] NVARCHAR(10) NOT NULL CHECK([Type] IN ('class','break')), 

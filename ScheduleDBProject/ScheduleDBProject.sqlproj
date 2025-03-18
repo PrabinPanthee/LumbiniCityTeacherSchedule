@@ -71,6 +71,15 @@
     <Build Include="dbo\Tables\SemesterInstance.sql" />
     <Build Include="dbo\Index\IDX_OneActiveInstancePerSemester.sql" />
     <Build Include="dbo\Tables\TimeSlot.sql" />
+    <Build Include="dbo\Tables\Subject.sql" />
+    <Build Include="dbo\Tables\SemesterSubject.sql" />
+    <Build Include="dbo\Tables\Teacher.sql" />
+    <Build Include="dbo\Tables\TeacherSubject.sql" />
+    <Build Include="dbo\Index\IDX_SemesterSubject_Subject.sql" />
+    <Build Include="dbo\Tables\TeacherAvailability.sql" />
+    <Build Include="dbo\Tables\ClassSchedule.sql" />
+    <Build Include="dbo\Stored_Procedure\spProgram_Create.sql" />
+    <Build Include="dbo\Stored_Procedure\spProgram_Delete.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocation\ScheduleDBProject.publish.xml" />
