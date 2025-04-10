@@ -3,7 +3,7 @@
     [SemesterInstanceId] INT NOT NULL,
     [TimeSlotId] INT NOT NULL,
     [SubjectId] INT NOT NULL,
-    [TeacherId] INT NOT NULL,
+    [TeacherId] INT NOT NULL ,
     
     CONSTRAINT [FK_ClassSchedule_SemesterInstance] 
         FOREIGN KEY ([SemesterInstanceId]) 
@@ -12,7 +12,7 @@
     CONSTRAINT [FK_ClassSchedule_TimeSlot] 
         FOREIGN KEY ([TimeSlotId]) 
         REFERENCES [dbo].[TimeSlot]([TimeSlotId]) 
-        ON DELETE CASCADE,
+        ,
     
     CONSTRAINT [FK_ClassSchedule_Subject] 
         FOREIGN KEY ([SubjectId]) 
@@ -22,6 +22,6 @@
         FOREIGN KEY ([TeacherId]) 
         REFERENCES [dbo].[Teacher]([TeacherId]),
     
-    CONSTRAINT [UC_TimeSlot_Assignment] 
-        UNIQUE ([TimeSlotId], [SubjectId])
+    CONSTRAINT [UC_ClassSchedule_UniqueSlot] 
+        UNIQUE ([SemesterInstanceId], [TimeSlotId], [TeacherId])
 );

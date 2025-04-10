@@ -62,6 +62,7 @@
     <Folder Include="PostDeploymentScripts" />
     <Folder Include="dbo\Stored_Procedure" />
     <Folder Include="dbo\Index" />
+    <Folder Include="dbo\Triggers" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Program.sql" />
@@ -72,19 +73,51 @@
     <Build Include="dbo\Index\IDX_OneActiveInstancePerSemester.sql" />
     <Build Include="dbo\Tables\TimeSlot.sql" />
     <Build Include="dbo\Tables\Subject.sql" />
-    <Build Include="dbo\Tables\SemesterSubject.sql" />
     <Build Include="dbo\Tables\Teacher.sql" />
-    <Build Include="dbo\Tables\TeacherSubject.sql" />
-    <Build Include="dbo\Index\IDX_SemesterSubject_Subject.sql" />
     <Build Include="dbo\Tables\TeacherAvailability.sql" />
     <Build Include="dbo\Tables\ClassSchedule.sql" />
     <Build Include="dbo\Stored_Procedure\spProgram_Create.sql" />
     <Build Include="dbo\Stored_Procedure\spProgram_Delete.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemester_Create.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemester_Delete.sql" />
+    <Build Include="dbo\Tables\TeacherAssignment.sql" />
+    <Build Include="dbo\Stored_Procedure\GenerateTimeSlotsForConfig.sql" />
+    <Build Include="dbo\Triggers\ValidateTeacherAssignment.sql" />
+    <Build Include="dbo\Triggers\PreventOverlappingSlots.sql" />
+    <Build Include="dbo\Stored_Procedure\spProgram_GetAll.sql" />
+    <Build Include="dbo\Stored_Procedure\spProgram_Get.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemester_GetAll.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemester_Get.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemesterScheduleConfig_Create.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemesterScheduleConfig_Update.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemesterScheduleConfig_Get.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemesterInstance_GetAll.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemesterInstance_GetActiveInstanceBySemesterId.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemesterInstance_Create.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemesterInstance_Update.sql" />
+    <Build Include="dbo\Stored_Procedure\spSubject_Create.sql" />
+    <Build Include="dbo\Stored_Procedure\spSubject_Get.sql" />
+    <Build Include="dbo\Stored_Procedure\spSubject_GetAllBySemesterId.sql" />
+    <Build Include="dbo\Stored_Procedure\spSubject_Update.sql" />
+    <Build Include="dbo\Stored_Procedure\spSubject_Delete.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacher_Create.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacher_Delete.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacher_Update.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacher_GetAll.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacher_Get.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacher_AddAvailability.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacher_UpdateAvailability.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacherAvailability_GetByTeacherId.sql" />
+    <Build Include="dbo\Stored_Procedure\spTimeSlot_GetByConfigId.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemesterScheduleConfig_GetBySemesterId.sql" />
+    <Build Include="dbo\Stored_Procedure\spIsConfigLinkedToActiveSemester.sql" />
+    <Build Include="dbo\Stored_Procedure\spIsProgramLinkedToActiveSemester.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemesterInstance_GetById.sql" />
+    <Build Include="dbo\Stored_Procedure\isSubjectCodeUnique.sql" />
+    <Build Include="dbo\Stored_Procedure\spIsSubjectUniqueForUpdate.sql" />
+    <Build Include="dbo\Stored_Procedure\spIsSubjectLinkedToActiveSemester.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocation\ScheduleDBProject.publish.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <PostDeploy Include="PostDeploymentScripts\Script.PostDeploy.sql" />
   </ItemGroup>
 </Project>

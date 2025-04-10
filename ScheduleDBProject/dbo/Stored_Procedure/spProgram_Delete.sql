@@ -6,12 +6,40 @@ BEGIN
     SET NOCOUNT ON;
 	BEGIN TRY
 		BEGIN TRANSACTION;
+
+		--Validate ProgramId
+		IF NOT EXISTS(
+				SELECT 1
+				FROM [dbo].[Program]
+				WHERE [ProgramId] = @ProgramId
+		)
+		BEGIN 
+			RAISERROR('Invalid ProgramId : Doesnot exists', 16,1)
+			ROLLBACK TRANSACTION
+			RETURN
+		END
+
+		  -- Check for ACTIVE semesters
+        IF EXISTS (
+            SELECT 1
+            FROM [dbo].[Semester] s
+            JOIN [dbo].[SemesterInstance] si 
+                ON s.SemesterId = si.SemesterId
+            WHERE s.ProgramId = @ProgramId
+                AND si.SemesterStatus = 'active'
+        )
+        BEGIN
+            RAISERROR('Cannot delete program: Active semesters exist.', 16, 1);
+            ROLLBACK TRANSACTION;
+            RETURN;
+        END
+		--CHECK IF SEMESTER EXISTS 
 		IF EXISTS(
 		   SELECT 1 FROM [dbo].[Semester]
 		   WHERE [ProgramId] = @ProgramId
 		)
 	    BEGIN
-		    RAISERROR('Cannot delete program. Delete all semester fisrt!',16,1);
+		    RAISERROR('Cannot delete program. Delete all semester first!',16,1);
 			RETURN
 	    END
 
