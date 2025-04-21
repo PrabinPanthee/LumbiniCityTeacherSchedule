@@ -3,7 +3,7 @@
 	
 AS
 BEGIN
-	SELECT [ConfigId],[PeriodNumber],[StartTime],[EndTime] 
+	SELECT [TimeSlotId], [ConfigId],[PeriodNumber],[StartTime],[EndTime],[Type]
 	FROM [dbo].[TimeSlot] 
 	WHERE [ConfigId] = @ConfigId
 END

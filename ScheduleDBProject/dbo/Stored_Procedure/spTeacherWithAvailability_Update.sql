@@ -1,8 +1,10 @@
-﻿CREATE PROCEDURE [dbo].[spTeacher_Update]
+﻿CREATE PROCEDURE [dbo].[spTeacherWithAvailability_Update]
     @TeacherId INT,
     @FirstName NVARCHAR(50),
     @LastName NVARCHAR(50),
-    @NumberOfClasses TINYINT
+    @NumberOfClasses TINYINT,
+    @StartTime TIME,
+    @EndTime TIME
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -48,6 +50,18 @@ BEGIN
             FirstName = @FirstName,
             LastName = @LastName,
             NumberOfClasses = @NumberOfClasses
+        WHERE TeacherId = @TeacherId;
+
+        IF @EndTime <= @StartTime
+        BEGIN
+            RAISERROR('EndTime must be after StartTime.', 16, 1);
+            RETURN;
+        END
+        --Update TeacherAvailability
+        UPDATE [dbo].[TeacherAvailability]
+        SET
+            StartTime =@StartTime,
+            EndTime = @EndTime
         WHERE TeacherId = @TeacherId;
 
         COMMIT TRANSACTION;

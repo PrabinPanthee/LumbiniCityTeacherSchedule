@@ -1,14 +1,14 @@
 ﻿CREATE PROCEDURE [dbo].[spTeacher_UpdateAvailability]
-    @AvailabilityId INT,
-    @NewStartTime TIME,
-    @NewEndTime TIME
+    @TeacherAvailabilityId INT,
+    @StartTime TIME,
+    @EndTime TIME
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
         -- Validate time range
-        IF @NewEndTime <= @NewStartTime
+        IF @EndTime <= @StartTime
         BEGIN
             RAISERROR('EndTime must be after StartTime.', 16, 1);
             ROLLBACK TRANSACTION;
@@ -18,9 +18,9 @@ BEGIN
         -- Update availability
         UPDATE [dbo].[TeacherAvailability]
         SET 
-            StartTime = @NewStartTime,
-            EndTime = @NewEndTime
-        WHERE TeacherAvailabilityId = @AvailabilityId;
+            StartTime = @StartTime,
+            EndTime = @EndTime
+        WHERE TeacherAvailabilityId = @TeacherAvailabilityId;
 
         COMMIT TRANSACTION;
     END TRY

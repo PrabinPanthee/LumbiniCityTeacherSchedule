@@ -35,7 +35,7 @@ BEGIN
 
 		)
 		BEGIN
-			RAISERROR('Cannot delete teacher: Assigned to active se',16,1);
+			RAISERROR('Cannot delete teacher: Assigned to active semester',16,1);
 			ROLLBACK TRANSACTION
 			RETURN
 		END

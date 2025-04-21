@@ -100,9 +100,9 @@
     <Build Include="dbo\Stored_Procedure\spSubject_GetAllBySemesterId.sql" />
     <Build Include="dbo\Stored_Procedure\spSubject_Update.sql" />
     <Build Include="dbo\Stored_Procedure\spSubject_Delete.sql" />
-    <Build Include="dbo\Stored_Procedure\spTeacher_Create.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacherWithAvailability_Create.sql" />
     <Build Include="dbo\Stored_Procedure\spTeacher_Delete.sql" />
-    <Build Include="dbo\Stored_Procedure\spTeacher_Update.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacherWithAvailability_Update.sql" />
     <Build Include="dbo\Stored_Procedure\spTeacher_GetAll.sql" />
     <Build Include="dbo\Stored_Procedure\spTeacher_Get.sql" />
     <Build Include="dbo\Stored_Procedure\spTeacher_AddAvailability.sql" />
@@ -116,6 +116,21 @@
     <Build Include="dbo\Stored_Procedure\isSubjectCodeUnique.sql" />
     <Build Include="dbo\Stored_Procedure\spIsSubjectUniqueForUpdate.sql" />
     <Build Include="dbo\Stored_Procedure\spIsSubjectLinkedToActiveSemester.sql" />
+    <Build Include="dbo\Stored_Procedure\spCountAssignedClasses.sql" />
+    <Build Include="dbo\Stored_Procedure\spIsteacherLinkedToActiveSemester.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacherWithAvailability_GetAll.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacherWithAvailability_GetById.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacherAssignment_Create.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacherAssignment_CheckExistingSubjectId.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacherAssignment_CountTeacherAssignment.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacherAssignment_Update.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacherAssignment_GetById.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacherAssignment_Delete.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacherAssignment_GetAll.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacherAssignment_GetAllBySemesterId.sql" />
+    <Build Include="dbo\Stored_Procedure\spTeacherAssignment_GetAllTeacherWithAvailabilityBySemesterId.sql" />
+    <Build Include="dbo\Stored_Procedure\spClassSchedule_GetAll.sql" />
+    <Build Include="dbo\Stored_Procedure\spClassScheduleWithTimeSlot.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocation\ScheduleDBProject.publish.xml" />

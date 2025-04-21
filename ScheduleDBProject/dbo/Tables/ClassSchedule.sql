@@ -2,8 +2,8 @@
     [ScheduleId] INT PRIMARY KEY IDENTITY(1,1),
     [SemesterInstanceId] INT NOT NULL,
     [TimeSlotId] INT NOT NULL,
-    [SubjectId] INT NOT NULL,
-    [TeacherId] INT NOT NULL ,
+    [SubjectId] INT,
+    [TeacherId] INT ,
     
     CONSTRAINT [FK_ClassSchedule_SemesterInstance] 
         FOREIGN KEY ([SemesterInstanceId]) 
