@@ -9,8 +9,7 @@
     <ProjectGuid>{39150b9f-2236-46a5-9221-cb6f66fac8ab}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
-    <RootPath>
-    </RootPath>
+    <RootPath />
     <RootNamespace>ScheduleDBProject</RootNamespace>
     <AssemblyName>ScheduleDBProject</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
@@ -48,7 +47,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
-    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
     <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
     <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
   </PropertyGroup>
@@ -63,6 +61,7 @@
     <Folder Include="dbo\Stored_Procedure" />
     <Folder Include="dbo\Index" />
     <Folder Include="dbo\Triggers" />
+    <Folder Include="dbo\Types" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Program.sql" />
@@ -131,6 +130,12 @@
     <Build Include="dbo\Stored_Procedure\spTeacherAssignment_GetAllTeacherWithAvailabilityBySemesterId.sql" />
     <Build Include="dbo\Stored_Procedure\spClassSchedule_GetAll.sql" />
     <Build Include="dbo\Stored_Procedure\spClassScheduleWithTimeSlot.sql" />
+    <Build Include="dbo\Types\ClassScheduleTVP.sql" />
+    <Build Include="dbo\Stored_Procedure\spSchedule_BulkInsert.sql" />
+    <Build Include="dbo\Stored_Procedure\spProgram_GetByProgramName.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemester_GetAllByProgramId.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemester_DuplicateSemesterNumber.sql" />
+    <Build Include="dbo\Stored_Procedure\spIsSemesterActive.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocation\ScheduleDBProject.publish.xml" />

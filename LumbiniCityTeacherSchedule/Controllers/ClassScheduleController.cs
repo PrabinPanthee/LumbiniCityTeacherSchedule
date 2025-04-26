@@ -92,9 +92,14 @@ namespace LumbiniCityTeacherSchedule.Controllers
                     return BadRequest(ModelState);
 
                 }
+                //map the teacherWithAvailability in map for easy access
                 var teacherAvailabilityMap = teacherWithAvailability.ToDictionary(t => t.TeacherId);
 
+                //get the existing schedule data
                 var existingSchedules = (await _classSchedule.GetAllWithTimeSlot()).ToList();
+
+                //store available slot for each tracher 
+                var teacherAvailableSlots = new List<(int subjectId , int teacherId, List<int> slotIds)>();
 
                 var finalSchedule = new List<ClassSchedule>();
                 foreach (var subject in subjectData)
@@ -105,7 +110,7 @@ namespace LumbiniCityTeacherSchedule.Controllers
 
                     var teacherData = teacherAvailabilityMap[assignment.TeacherId];
 
-                    var availableSlot = FindAvailableSlot
+                    var availableSlotIds = FindAvailableSlotIds
                                         (
                                             timeSlotData, 
                                             teacherData, 
@@ -113,32 +118,49 @@ namespace LumbiniCityTeacherSchedule.Controllers
                                             existingSchedules,
                                             SemesterInstanceId
                                         );
-                    if (availableSlot == null) continue;
-                    var schedule = new ClassSchedule
+                    if (availableSlotIds.Any()) 
+                    { 
+                     teacherAvailableSlots.Add((subject.SubjectId,assignment.TeacherId, availableSlotIds));
+                    }
+                }
+                
+                var sortedTeacher = teacherAvailableSlots.OrderBy(t=> t.slotIds.Count).ToList();
+                foreach (var (subjectId, teacherId, slotIds) in sortedTeacher)
+                {
+                    foreach (var slotId in slotIds)
                     {
-                        SemesterInstanceId = SemesterInstanceId,
-                        TimeSlotId = availableSlot.TimeSlotId,
-                        SubjectId = subject.SubjectId,
-                        TeacherId = assignment.TeacherId
-                    };
-                    finalSchedule.Add( schedule );
+                        bool alreadyTaken = existingSchedules.Any(s => s.TimeSlotId == slotId &&
+                            (s.TeacherId == teacherId || s.SemesterInstanceId == SemesterInstanceId));
+                        if (!alreadyTaken)
+                        {
+                            finalSchedule.Add(new ClassSchedule
+                            {
+                                SemesterInstanceId = SemesterInstanceId,
+                                SubjectId = subjectId,
+                                TeacherId = teacherId,
+                                TimeSlotId = slotId
+                            });
 
-                    var newExistingSchedule = new ClassScheduleWithTimeSlotDTO
-                    {
-                        SemesterInstanceId = SemesterInstanceId,
-                        TimeSlotId = availableSlot.TimeSlotId,
-                        StartTime = availableSlot.StartTime,
-                        EndTime = availableSlot.EndTime,
-                    };
-                    existingSchedules.Add(newExistingSchedule);
+                            var slot = timeSlotData.First(s => s.TimeSlotId == slotId);
+                            existingSchedules.Add(new ClassScheduleWithTimeSlotDTO
+                            {
+                                SemesterInstanceId = SemesterInstanceId,
+                                TimeSlotId = slotId,
+                                TeacherId = teacherId,
+                                StartTime = slot.StartTime,
+                                EndTime = slot.EndTime
+                            });
+                            break;
+                        }
+
+                    }
+
                 }
                 if (!finalSchedule.Any())
-                {
-                    ModelState.AddModelError("Failed", "CouldnotCreate the schedule");
-                    return BadRequest(ModelState);
-                }
-                return Ok(finalSchedule);
+                    return BadRequest("Failed to generate schedule.");
+                await _classSchedule.BulkInsert(finalSchedule);
 
+                return Ok(finalSchedule);
             }
             catch (Exception ex)
             {
@@ -150,7 +172,7 @@ namespace LumbiniCityTeacherSchedule.Controllers
 
         }
 
-        private TimeSlot? FindAvailableSlot(
+        private List<int> FindAvailableSlotIds(
             List<TimeSlot> timeSlots,
             TeacherWithAvailability teacherData,
             int teacherId,
@@ -159,6 +181,7 @@ namespace LumbiniCityTeacherSchedule.Controllers
 
          )
         {
+            var availableSlotsIds = new List<int>();
             foreach (var slot in timeSlots)
             {
                 bool isAvailable = teacherData.StartTime <= slot.StartTime && teacherData.EndTime >= slot.EndTime;
@@ -175,10 +198,14 @@ namespace LumbiniCityTeacherSchedule.Controllers
                 );
                 if (isAvailable && !isAlreadySchedule && !isSlotTakenInSemester)
                 {
-                    return slot;
+                    availableSlotsIds.Add( slot.TimeSlotId );
                 }
             }
-            return null;
+            if (!availableSlotsIds.Any())
+            {
+                Console.WriteLine($"Cannot find suitable time for {teacherId}");
+            }
+            return availableSlotsIds;
         } 
     }
 }

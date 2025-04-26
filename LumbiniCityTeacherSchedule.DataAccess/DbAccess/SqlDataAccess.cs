@@ -28,13 +28,19 @@ namespace LumbiniCityTeacherSchedule.DataAccess.DbAccess
             using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
             await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
         }
-
+        public async Task SaveBulkData(string storedProcedure, DynamicParameters parameters, string connectionId = "Default")
+        {
+            using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+            await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+        }
         public async Task<T> ExecuteScalarQuery<T, U>(string storedProcedure,U parameters,string connectionId = "Default")
         {
             using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
             return await connection.ExecuteScalarAsync<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
 
         }
+
+
         
 
     }

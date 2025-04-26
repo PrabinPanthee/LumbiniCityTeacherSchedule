@@ -1,5 +1,6 @@
 ﻿using LumbiniCityTeacherSchedule.DataAccess.Data.ProgramData;
-using Microsoft.AspNetCore.Http.HttpResults;
+using LumbiniCityTeacherSchedule.Models.DTO;
+using LumbiniCityTeacherSchedule.Service.ProgramService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LumbiniCityTeacherSchedule.Controllers
@@ -8,11 +9,12 @@ namespace LumbiniCityTeacherSchedule.Controllers
     [Route("api/[controller]")]
     public class ProgramController : Controller
     {  //injecting di services 
-        private readonly IProgramData _programData;
+       
+        private readonly IProgramService _programService;
 
-        public ProgramController(IProgramData programData)
+        public ProgramController(IProgramService programService)
         {
-            _programData = programData;
+            _programService = programService;
         }
         //Get all Program 
         [HttpGet]
@@ -20,16 +22,15 @@ namespace LumbiniCityTeacherSchedule.Controllers
         {
             try {
                 //gets datas from service 
-               var programs = await _programData.GetAll();
+               var result  = await _programService.GetAllPrograms();
                 //checks if any record from service 
-                if (programs == null || !programs.Any()) 
-                { 
-                    //if null or empty returns no content 204 ststus 
-                    return NoContent(); 
+                if (!result.Success) 
+                {  
+                    return NotFound(result.Message);
                 }
                 //if not null then returns programs 
 
-                return Ok(programs);
+                return Ok(result.Data);
                  
             } catch (Exception ex) 
             { 
@@ -39,19 +40,21 @@ namespace LumbiniCityTeacherSchedule.Controllers
            
         }
 
-        //Get By Id controller 
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProgramByID(int id) 
         {
             try
             {
-               var program = await _programData.Get(id);
-                if(program == null)
+                if (id == 0)
                 {
-                    return NotFound("Cannot find program");
+                    return BadRequest("Invalid Id");
                 }
-                return Ok(program);
+               var result = await _programService.GetProgramsById(id);
+                if(!result.Success)
+                {
+                    return NotFound(result.Message);
+                }
+                return Ok(result.Data);
             
             }
             catch(Exception ex)
@@ -62,16 +65,34 @@ namespace LumbiniCityTeacherSchedule.Controllers
         
         }
         [HttpPost]
-        public async Task<IActionResult> CreateProgram(LumbiniCityTeacherSchedule.Models.Models.Program program)
+        public async Task<IActionResult> CreateProgram(CreateProgramDTO program)
         {
+          
             try 
             { 
-             if(program == null) 
+                if(!ModelState.IsValid )
                 {
-                    return BadRequest("Program Data is Required");
+                  return BadRequest(ModelState);
                 }
-                await _programData.Create(program);
-                return Ok("SucessFully Created");
+
+                if(program == null)
+                {
+                    return BadRequest("Program is required");
+                }
+
+                if (string.IsNullOrWhiteSpace(program.ProgramName))
+                {
+                    return BadRequest("Program name is required");
+                }
+
+                var result = await _programService.CreateProgram(program);
+                if (!result.Success) 
+                { 
+                 return BadRequest(result.Message);
+                }
+                return Ok(result.Message);
+            
+               
             }
             catch(Exception ex)
             {
@@ -85,20 +106,17 @@ namespace LumbiniCityTeacherSchedule.Controllers
         {
             try
             {
-                var program = await _programData.Get(id);
-                if (program == null) 
+                if(id == 0)
                 {
-                    return NotFound($"The id:{id} doesnot exist");
+                    return BadRequest("Invalid Id");
+                }
+               var result = await _programService.DeleteProgram(id);
+                if (!result.Success)
+                {
+                    return BadRequest(result.Message);
                 }
 
-                var isActive = await _programData.ValidateActiveSemesterForProgram(id);
-                if (isActive) 
-                {
-                    ModelState.AddModelError("ProgramId", "Cannot Delete while semester is active");
-                    return BadRequest(ModelState);
-                }
-                await _programData.Delete(id);
-                return Ok(new {Message = "Program deleted succesfully"});
+                return Ok(result.Message);
             }
             catch (Exception ex)
             {

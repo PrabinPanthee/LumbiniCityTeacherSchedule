@@ -1,5 +1,6 @@
 ﻿
 using LumbiniCityTeacherSchedule.Models.DTO;
+using LumbiniCityTeacherSchedule.Models.Models;
 
 namespace LumbiniCityTeacherSchedule.DataAccess.Data.ClassScheduleData
 {
@@ -7,5 +8,6 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.ClassScheduleData
     {
         Task<IEnumerable<ClassScheduleData>> GetAll();
         Task<IEnumerable<ClassScheduleWithTimeSlotDTO>> GetAllWithTimeSlot();
+        Task BulkInsert(List<ClassSchedule> classSchedules);
     }
 }

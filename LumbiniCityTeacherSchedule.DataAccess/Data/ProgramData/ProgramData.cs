@@ -1,9 +1,11 @@
 ﻿using LumbiniCityTeacherSchedule.DataAccess.Data.ProgramData;
 using LumbiniCityTeacherSchedule.DataAccess.DbAccess;
+using LumbiniCityTeacherSchedule.Models.DTO;
 using LumbiniCityTeacherSchedule.Models.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +31,7 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.ProgramData
             return result.FirstOrDefault();
         }
 
-        public Task Create(Program program)
+        public Task Create(CreateProgramDTO program)
         {
             return _db.SaveData(storedProcedure: "dbo.spProgram_Create", new { program.ProgramName });
         }
@@ -42,5 +44,12 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.ProgramData
             var result = await _db.ExecuteScalarQuery<int,dynamic>(storedProcedure:"spIsProgramLinkedToActiveSemester",new { programId });
             return result == 1;
         } 
+
+        public async Task<bool> IsNameExist(string ProgramName)
+        {
+            var result = await _db.ExecuteScalarQuery<int, dynamic>(storedProcedure: "spProgram_GetByProgramName",
+                new {ProgramName});
+            return result == 1;
+        }   
     }
 }

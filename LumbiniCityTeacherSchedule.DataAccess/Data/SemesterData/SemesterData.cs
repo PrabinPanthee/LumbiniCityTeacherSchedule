@@ -1,4 +1,5 @@
 ﻿using LumbiniCityTeacherSchedule.DataAccess.DbAccess;
+using LumbiniCityTeacherSchedule.Models.DTO;
 using LumbiniCityTeacherSchedule.Models.Models;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.SemesterData
             return result.FirstOrDefault();
         }
 
-        public Task Create(Semester semester)
+        public Task Create(SemesterDTO semester)
         {
             return _db.SaveData(storedProcedure: "dbo.spSemester_Create", new { semester.ProgramId, semester.SemesterNumber });
         }
@@ -35,6 +36,25 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.SemesterData
       //expression bodied method returns task 
         public Task Delete(int id) =>
             _db.SaveData(storedProcedure: "dbo.spSemester_Delete", new { SemesterId = id });
+
+        public Task<IEnumerable<Semester>> GetAllByProgramId(int ProgramId)
+        {
+            return _db.LoadData<Semester,dynamic>(storedProcedure: "spSemester_GetAllByProgramId",new {ProgramId});
+        }
+
+        public async Task<bool> IsNumberExist(int SemesterNumber, int ProgramId)
+        {
+            var result = await _db.ExecuteScalarQuery<int, dynamic>(storedProcedure: "spSemester_DuplicateSemesterNumber",
+                                new {SemesterNumber,ProgramId });
+            return result == 1;
+        }
+
+        public async Task<bool>IsSemesterActive(int SemesterId)
+        {
+            var result = await _db.ExecuteScalarQuery<int, dynamic>(storedProcedure: "spIsSemesterActive", new {SemesterId});
+            return result == 1;
+        }
+
     }
 }
 
