@@ -1,4 +1,5 @@
 ﻿using LumbiniCityTeacherSchedule.DataAccess.DbAccess;
+using LumbiniCityTeacherSchedule.Models.DTO;
 using LumbiniCityTeacherSchedule.Models.Models;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.JoinedTeacherAndAvailabilit
             return result.FirstOrDefault();
         }
 
-        public Task Create(TeacherWithAvailability withAvailability)
+        public Task Create(CreateTeacherWithAvailabilityDTO withAvailability)
         {
             return _db.SaveData(storedProcedure: "spTeacherWithAvailability_Create",
                 new
@@ -48,11 +49,11 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.JoinedTeacherAndAvailabilit
                 });
         }
 
-        public Task Update(int TeacherId,TeacherWithAvailability withAvailability)
+        public Task Update(UpdateTeacherWithAvailabilityDto withAvailability)
         {
             return _db.SaveData(storedProcedure: "spTeacherWithAvailability_Update", new
             {
-                TeacherId,
+                withAvailability.TeacherId,
                 withAvailability.FirstName,
                 withAvailability.LastName,
                 withAvailability.NumberOfClasses,

@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[isSubjectCodeUnique]
 	@SubjectCode NVARCHAR(50)
+
 AS
 BEGIN
 	IF EXISTS (

@@ -62,8 +62,8 @@
                             </td>
                             <td>
                                 <a href="#" onclick="deleteSemester(@sem.value.SemesterId,this)" class="btn btn-danger btn-sm">Delete</a>
-                                <a asp-controller="SemesterConfig" asp-action="Index" asp-route-semesterId="@sem.value.SemesterId" class="btn btn-info btn-sm">Configuration</a>
-                                <a asp-controller="Subject" asp-action="Index" asp-route-semesterId="@sem.value.SemesterId" class="btn btn-primary btn-sm">Subject List</a>
+                                <a asp-controller="Configuration" asp-action="Index" asp-route-semesterId="@sem.value.SemesterId" asp-route-programId="@programId" class="btn btn-info btn-sm">Configuration</a>
+                                <a asp-controller="Subject" asp-action="Index" asp-route-semesterId="@sem.value.SemesterId" asp-route-programId ="@programId" class="btn btn-primary btn-sm">Subject List</a>
                             </td>
                         </tr>
                     }

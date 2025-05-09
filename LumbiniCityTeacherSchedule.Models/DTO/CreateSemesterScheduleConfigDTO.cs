@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LumbiniCityTeacherSchedule.Models.DTO
 {
-    public class CreateSemesterScheduleConfigDTO
+    public class CreateSemesterScheduleConfigDTO:IValidatableObject
+
     {
+        [Required(ErrorMessage ="ProgramId is Required")]
+        public int ProgramId { get; set; }
         [Required(ErrorMessage ="Semester is Required")]
         public int SemesterId { get; set; }
         [Required(ErrorMessage ="TotalClasses is Required")]
@@ -21,7 +19,7 @@ namespace LumbiniCityTeacherSchedule.Models.DTO
         {
             if (BreakAfterPeriod.HasValue)
             {
-                if(BreakAfterPeriod <= 1 || BreakAfterPeriod >= TotalClasses)
+                if(BreakAfterPeriod < 1 || BreakAfterPeriod >= TotalClasses)
                 {
                     yield return new ValidationResult("BreakAfterPeriod must be greater than 1 and less than TotalClasses.", 
                         [nameof(BreakAfterPeriod)]

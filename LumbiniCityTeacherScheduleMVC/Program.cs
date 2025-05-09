@@ -9,8 +9,13 @@ using LumbiniCityTeacherSchedule.DataAccess.Data.SubjectData;
 using LumbiniCityTeacherSchedule.DataAccess.Data.TeacherAssignmentData;
 using LumbiniCityTeacherSchedule.DataAccess.Data.TimeSlotData;
 using LumbiniCityTeacherSchedule.DataAccess.DbAccess;
+using LumbiniCityTeacherSchedule.Service.ConfigurationService;
 using LumbiniCityTeacherSchedule.Service.ProgramService;
+using LumbiniCityTeacherSchedule.Service.SemesterScheduleConfigService;
 using LumbiniCityTeacherSchedule.Service.SemesterService;
+using LumbiniCityTeacherSchedule.Service.SubjectService;
+using LumbiniCityTeacherSchedule.Service.TeacherAssignmentService;
+using LumbiniCityTeacherSchedule.Service.TeacherService;
 using LumbiniCityTeacherSchedule.Utility.ModelBinders;
 using LumbiniCityTeacherSchedule.Utility.SqlMapperHandler;
 
@@ -42,7 +47,10 @@ builder.Services.AddScoped<ITimeSlotData, TimeSlotData>();
 builder.Services.AddScoped<IClassScheduleData, ClassScheduleData>();
 builder.Services.AddScoped<IProgramService, ProgramService>();
 builder.Services.AddScoped<ISemesterService,SemesterService>();
-
+builder.Services.AddScoped<ISemesterScheduleConfigService,SemesterScheduleConfigService>();
+builder.Services.AddScoped<ISubjectService, SubjectService>();
+builder.Services.AddScoped<ITeacherWithAvailabilityService,TeacherWithAvailabilityService>();
+builder.Services.AddScoped<ITeacherAssignmentService, TeacherAssignmentService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -23,12 +23,12 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.SubjectData
             return _db.LoadData<Subject, dynamic>(storedProcedure: "spSubject_GetAllBySemesterId", new { SemesterId });
 
         }
-        public Task Create(Subject subject) =>
+        public Task Create(CreateSubjectDTO subject) =>
         _db.SaveData(storedProcedure: "spSubject_Create", new { subject.SemesterId, subject.SubjectName, subject.SubjectCode });
 
 
-        public Task Update(int SubjectId, UpdateSubjectDto dto) =>
-            _db.SaveData(storedProcedure: "spSubject_Update", new { SubjectId, dto.SubjectName, dto.SubjectCode });
+        public Task Update(UpdateSubjectDto dto) =>
+            _db.SaveData(storedProcedure: "spSubject_Update", new {dto.SubjectId, dto.SubjectName, dto.SubjectCode });
 
         public async Task<Subject?> GetById(int SubjectId)
         {
@@ -61,5 +61,7 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.SubjectData
             return  _db.SaveData(storedProcedure: "spSubject_Delete", new { SubjectId });
         }
 
+        
+        
     }
 }

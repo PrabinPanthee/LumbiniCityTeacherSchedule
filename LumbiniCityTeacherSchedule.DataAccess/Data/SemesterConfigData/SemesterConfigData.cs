@@ -1,10 +1,6 @@
 ﻿using LumbiniCityTeacherSchedule.DataAccess.DbAccess;
+using LumbiniCityTeacherSchedule.Models.DTO;
 using LumbiniCityTeacherSchedule.Models.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LumbiniCityTeacherSchedule.DataAccess.Data.SemesterConfigData
 {
@@ -31,7 +27,7 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.SemesterConfigData
             return semesterScheduleConfig.FirstOrDefault();
         }
 
-        public Task Create(SemesterScheduleConfig semesterScheduleConfig)
+        public Task Create(CreateSemesterScheduleConfigDTO semesterScheduleConfig)
         {
             return _db.SaveData(storedProcedure: "spSemesterScheduleConfig_Create", new
             {

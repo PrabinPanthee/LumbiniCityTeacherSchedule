@@ -12,8 +12,8 @@ namespace LumbiniCityTeacherSchedule.Service.ConfigurationService
     public interface ISemesterScheduleConfigService
     {
         Task<ServiceResult<SemesterScheduleConfig>> GetSemesterScheduleConfig(int SemesterId);
-        Task<ServiceResult> Update(int ConfigId,UpdateSemesterScheduleConfigDto Config);
-        Task<ServiceResult> Delete(int ConfigId);
-        Task<ServiceResult> Create();
+        Task<ServiceResult> Update(UpdateSemesterScheduleConfigDto Config);
+        Task<ServiceResult> Create(CreateSemesterScheduleConfigDTO configDTO);
+        Task<ServiceResult<SemesterScheduleConfig>> Get(int ConfigId);
     }
 }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+
 
 namespace LumbiniCityTeacherSchedule.Models.Models
 {
@@ -20,5 +16,6 @@ namespace LumbiniCityTeacherSchedule.Models.Models
         public TimeOnly StartTime { get; set; }
         [Required]
         public TimeOnly EndTime { get; set; }
+        public string FullName => $"{FirstName} {LastName}";
     }
 }

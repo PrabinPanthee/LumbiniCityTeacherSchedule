@@ -11,6 +11,7 @@ using LumbiniCityTeacherSchedule.DataAccess.Data.TeacherData;
 using LumbiniCityTeacherSchedule.DataAccess.Data.TimeSlotData;
 using LumbiniCityTeacherSchedule.DataAccess.DbAccess;
 using LumbiniCityTeacherSchedule.Service.ProgramService;
+using LumbiniCityTeacherSchedule.Service.SubjectService;
 using LumbiniCityTeacherSchedule.Utility.JsonConverter;
 using LumbiniCityTeacherSchedule.Utility.SqlMapperHandler;
 
@@ -43,6 +44,8 @@ builder.Services.AddScoped<ITeacherAssignmentData,TeacherAssignmentData>();
 builder.Services.AddScoped<ITimeSlotData,TimeSlotData>();
 builder.Services.AddScoped<IClassScheduleData, ClassScheduleData>();
 builder.Services.AddScoped<IProgramService, ProgramService>();
+builder.Services.AddScoped<ISubjectService,SubjectService>();
+
 
 var app = builder.Build();
 

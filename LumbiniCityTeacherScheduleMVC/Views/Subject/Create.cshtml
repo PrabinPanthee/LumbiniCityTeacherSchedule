@@ -1,0 +1,68 @@
+﻿@model LumbiniCityTeacherSchedule.Models.DTO.CreateSubjectDTO
+
+@{
+    ViewData["Title"] = "Create Subject";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Create Subject</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-4">
+        @* Error Message *@
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @ViewBag.Error
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <form asp-action="Create" method="post">
+
+            @if (!ViewData.ModelState.IsValid && ViewData.ModelState.Values.Any(v => v.Errors.Count > 0))
+            {
+                <div class="alert alert-danger">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div>@error.ErrorMessage</div>
+                    }
+                </div>
+            }
+            @* Hidden fields for ProgramId and SemesterId *@
+            <input type="hidden" asp-for="ProgramId" />
+            <input type="hidden" asp-for="SemesterId" />
+
+            <div class="mb-3">
+                <label asp-for="SubjectName" class="form-label"></label>
+                <input asp-for="SubjectName" class="form-control" />
+                <span asp-validation-for="SubjectName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SubjectCode" class="form-label"></label>
+                <input asp-for="SubjectCode" class="form-control" />
+                <span asp-validation-for="SubjectCode" class="text-danger"></span>
+            </div>
+
+            <div class="mt-4 d-flex justify-content-between">
+                <a asp-action="Index" asp-route-semesterId="@Model.SemesterId" asp-route-programId="@Model.ProgramId" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left-circle"></i> Back to Subject List
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i> Create
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

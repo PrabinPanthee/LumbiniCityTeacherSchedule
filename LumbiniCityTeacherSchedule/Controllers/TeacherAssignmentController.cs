@@ -4,7 +4,7 @@ using LumbiniCityTeacherSchedule.DataAccess.Data.TeacherAssignmentData;
 using LumbiniCityTeacherSchedule.Models.DTO;
 using LumbiniCityTeacherSchedule.Models.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.InteropServices;
+
 
 namespace LumbiniCityTeacherSchedule.Controllers
 {

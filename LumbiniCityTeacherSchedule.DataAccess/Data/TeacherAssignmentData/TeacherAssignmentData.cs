@@ -76,5 +76,9 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.TeacherAssignmentData
             return  _db.ExecuteScalarQuery<int,dynamic>(storedProcedure: "spTeacherAssignment_CountTeacherAssignment", new { TeacherId });
         }
 
+        public Task<IEnumerable<JoinedTeacherAssignmentBySubjectDTO>> GetAllJoinedTeacherAssignmentBySemesterId(int SemesterId)
+        {
+            return _db.LoadData<JoinedTeacherAssignmentBySubjectDTO,dynamic>(storedProcedure:"spTeacherAssignment_GetAllJoinedTeacherAssignmetBySemesterId",new { SemesterId});
+        }
     }
 }

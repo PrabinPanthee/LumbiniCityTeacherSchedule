@@ -1,0 +1,53 @@
+﻿@model LumbiniCityTeacherSchedule.Models.DTO.UpdateSubjectDto
+
+@{
+    ViewData["Title"] = "Update Subject";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Update Subject</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-4">
+        <form asp-action="Update" method="post">
+            @* Show global ModelState errors (e.g., from service failure) *@
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+            @Html.HiddenFor(x => x.SubjectId)
+            @Html.HiddenFor(x => x.SemesterId)
+            @Html.HiddenFor(x => x.ProgramId)
+
+            <div class="mb-3">
+                <label asp-for="SubjectName" class="form-label"></label>
+                <input asp-for="SubjectName" class="form-control" />
+                <span asp-validation-for="SubjectName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SubjectCode" class="form-label"></label>
+                <input asp-for="SubjectCode" class="form-control" />
+                <span asp-validation-for="SubjectCode" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" asp-route-semesterId="@Model.SemesterId" asp-route-programId="@Model.ProgramId" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left-circle"></i> Back to Subject List
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save"></i> Update
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

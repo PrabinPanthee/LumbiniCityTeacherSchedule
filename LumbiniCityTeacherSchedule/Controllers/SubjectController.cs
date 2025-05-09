@@ -2,10 +2,8 @@
 using LumbiniCityTeacherSchedule.DataAccess.Data.SemesterInstanceData;
 using LumbiniCityTeacherSchedule.DataAccess.Data.SubjectData;
 using LumbiniCityTeacherSchedule.Models.DTO;
-using LumbiniCityTeacherSchedule.Models.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Runtime.InteropServices;
+
 
 namespace LumbiniCityTeacherSchedule.Controllers
 {
@@ -75,7 +73,7 @@ namespace LumbiniCityTeacherSchedule.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Subject subject) 
+        public async Task<IActionResult> Create(CreateSubjectDTO subject) 
         {
             try
             {

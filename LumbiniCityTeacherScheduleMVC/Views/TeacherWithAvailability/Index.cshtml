@@ -1,0 +1,129 @@
+﻿@model IEnumerable<LumbiniCityTeacherSchedule.Models.Models.TeacherWithAvailability>
+
+@{
+    ViewData["Title"] = "Teacher Availability List";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Teacher Availability List</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-4">
+        @* Success and Error Messages *@
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @ViewBag.Error
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @if (Model != null && Model.Any())
+        {
+            <table class="table table-bordered text-center align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Teacher Name</th>
+                        <th>Number of Classes</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var teacher in Model)
+                    {
+                        <tr>
+                            <td>@teacher.FirstName @teacher.LastName</td>
+                            <td>@teacher.NumberOfClasses</td>
+                            <td>@teacher.StartTime</td>
+                            <td>@teacher.EndTime</td>
+                            <td>
+                                <div class="d-flex justify-content-center">
+                                    <a asp-action="Update" asp-route-TeacherId="@teacher.TeacherId" class="btn btn-warning btn-sm me-2">
+                                        <i class="bi bi-pencil-square"></i> Edit 
+                                    </a>
+                                    <a href="#" onclick="deleteTeacher(@teacher.TeacherId,this)" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this teacher availability?');">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-warning text-center" role="alert">
+                No teacher availability records found.
+            </div>
+        }
+
+        <div class="mt-4 d-flex justify-content-between">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Back
+            </a>
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Add +
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function deleteTeacher(id,btn){
+                 Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to undo this!.This will affect teacher assignment",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                 }).then((result)=>{
+                     if(result.isConfirmed){
+                          $.ajax({
+                                   url:"/TeacherWithAvailability/Delete",
+                                   type:"POST",
+                                   data:{TeacherId:id},
+                                   success:function(response){
+                                        if(response.success){
+                                            toastr.success(response.message);
+                                            $(btn).closest('tr').fadeOut(500, function()
+                                            {
+                                                $(this).remove();
+                                            });
+                                        }else
+                                        {
+                                            toastr.error(response.message);
+                                        }
+
+                                   },
+                                   error: function()
+                                   {
+                                        toastr.error("Unexpected error occured");
+                                   }
+                          });
+
+                     }
+                 });
+
+        }
+
+    </script>
+    }
+

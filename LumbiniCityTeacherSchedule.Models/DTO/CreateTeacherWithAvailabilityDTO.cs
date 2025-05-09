@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System.ComponentModel.DataAnnotations;
 namespace LumbiniCityTeacherSchedule.Models.DTO
 {
-    public class UpdateTeacherWithAvailabilityDto:IValidatableObject
+    public class CreateTeacherWithAvailabilityDTO:IValidatableObject
     {
-        public int TeacherId {  get; set; }
-        [Required(ErrorMessage = "FirstName is Required")]
+        [Required(ErrorMessage ="FirstName is Required")]
         public string? FirstName { get; set; }
-        [Required(ErrorMessage = "Last name is required")]
+        [Required(ErrorMessage ="Last name is required")]
         public string? LastName { get; set; }
-        [Required(ErrorMessage = "Number of classes is required")]
-        [Range(1, 6, ErrorMessage = "Must be between 1 and 6")]
+        [Required(ErrorMessage ="Number of classes is required")]
+        [Range(1,6,ErrorMessage ="Must be between 1 and 6")]
         public int NumberOfClasses { get; set; }
-        [Required(ErrorMessage = "StartTime is required")]
+        [Required(ErrorMessage ="StartTime is required")]
         public TimeOnly StartTime { get; set; }
-        [Required(ErrorMessage = "EndTime is required")]
+        [Required(ErrorMessage ="EndTime is required")]
         public TimeOnly EndTime { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -36,13 +29,11 @@ namespace LumbiniCityTeacherSchedule.Models.DTO
                 yield return new ValidationResult("Start time cannot be earlier than 6:30 AM", [nameof(StartTime)]);
             }
 
-            if (EndTime > maxEnd)
+            if (EndTime > maxEnd) 
             {
-                yield return new ValidationResult($"End time cannot be later than 12:00 AM", [nameof(EndTime)]);
+              yield return new ValidationResult($"End time cannot be later than 12:00 AM", [nameof(EndTime)]);
             }
 
         }
     }
-
 }
-

@@ -1,0 +1,60 @@
+﻿@model LumbiniCityTeacherSchedule.Models.DTO.UpdateSemesterScheduleConfigDto
+
+@{
+    ViewData["Title"] = "Update Semester Schedule Config";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Update Semester Schedule Config</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form asp-action="Update" method="post">
+
+            @if (!ViewData.ModelState.IsValid && ViewData.ModelState.Values.Any(v => v.Errors.Count > 0))
+            {
+                    <div class="alert alert-danger">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                                <div>@error.ErrorMessage</div>
+                    }
+                    </div>
+            }
+
+            <input type="hidden" asp-for="ConfigId" value="@Model.ConfigId" />
+            <input type="hidden" asp-for="SemesterId" value="@Model.SemesterId" />
+            <input type="hidden" asp-for="ProgramId" value="@Model.ProgramId" />
+            
+
+            <div class="form-floating py-2">
+                <input asp-for="TotalClasses" class="form-control border-0 shadow" />
+                <label asp-for="TotalClasses" class="ms-2"></label>
+                <span asp-validation-for="TotalClasses" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating py-2">
+                <input asp-for="BreakAfterPeriod" class="form-control border-0 shadow" />
+                <label asp-for="BreakAfterPeriod" class="ms-2"></label>
+                <span asp-validation-for="BreakAfterPeriod" class="text-danger"></span>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-6 col-md-3">
+                    <button type="submit" class="btn btn-primary form-control">Update</button>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a asp-action="Index" asp-route-semesterId="@Model.SemesterId" asp-route-programId="@Model.ProgramId" class="btn btn-outline-primary border form-control">Back to List</a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+}

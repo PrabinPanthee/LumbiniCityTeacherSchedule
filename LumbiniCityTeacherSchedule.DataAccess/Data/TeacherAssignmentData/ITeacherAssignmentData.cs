@@ -14,5 +14,6 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.TeacherAssignmentData
         Task Delete(int TeacherAssignmentId);
         Task<IEnumerable<JoinedTeacherAssignment>> GetAllTeacherAssignmentData();
         Task<IEnumerable<TeacherAssignment>> GetAllBySemesterId(int SemesterId);
+        Task<IEnumerable<JoinedTeacherAssignmentBySubjectDTO>> GetAllJoinedTeacherAssignmentBySemesterId(int SemesterId);
     }
 }
