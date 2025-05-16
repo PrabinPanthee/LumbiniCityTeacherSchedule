@@ -1,0 +1,121 @@
+﻿@model List<LumbiniCityTeacherSchedule.Models.DTO.JoinedSemesterInstanceDto>
+@{
+    ViewData["Title"] = "Semester Instances";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient py-3 d-flex justify-content-between align-items-center">
+        <h2 class="text-white mb-0">Active Semester Instances</h2>
+        @if(User.IsInRole(SD.Role_Admin)){
+        <a asp-action="Create" class="btn btn-light">
+            <i class="bi bi-plus-circle"></i> Activate New Semester
+        </a>
+        }
+        
+    </div>
+
+    <div class="card-body p-4">
+        @if (!string.IsNullOrEmpty(ViewBag.Error as string))
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @ViewBag.Error
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="alert alert-warning text-center">
+                No active semester instances found.
+            </div>
+        }
+        else
+        {
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Program</th>
+                        <th>Semester</th>
+                        <th>Start Date</th>
+                        <th>Status</th>
+                        @if (User.IsInRole(SD.Role_Admin)){
+                            <th class="text-center">Action</th>
+                        }
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.ProgramName</td>
+                            <td>@item.SemesterNumber</td>
+                            <td>@item.StartDate.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                <span class="badge bg-@(item.SemesterStatus == "active" ? "success" : "secondary")">
+                                    @item.SemesterStatus
+                                </span>
+                            </td>
+                            @if (User.IsInRole(SD.Role_Admin)){
+                                <td class="text-center">
+                                <a asp-area="Admin" asp-controller="ClassSchedule"
+                                   asp-action="Create"
+                                   asp-route-semesterInstanceId="@item.SemesterInstanceId"
+                                   class="btn btn-success btn-sm me-2">
+                                    <i class="bi bi-calendar-plus"></i> Create Schedule
+                                </a>
+                                @if (item.SemesterStatus == "active")
+                                {
+                                    <button class="btn btn-sm btn-danger btn-complete" data-id="@item.SemesterInstanceId">
+                                        <i class="bi bi-check-circle"></i> Complete
+                                    </button>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Completed</span>
+                                }
+                            </td>
+
+                            }
+                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    
+    <script>
+        $(document).ready(function () {
+            $('.btn-complete').click(function () {
+                var id = $(this).data('id');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This will mark the semester as completed.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, complete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.post('/Admin/SemesterInstance/Complete', { SemesterInstanceId: id }, function (response) {
+                            if (response.success) {
+                                Swal.fire('Completed!', response.message, 'success')
+                                    .then(() => location.reload());
+                            } else {
+                                Swal.fire('Error!', response.message, 'error');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+

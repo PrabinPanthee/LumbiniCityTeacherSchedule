@@ -47,6 +47,10 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.ClassScheduleData
             parameters.Add("@classSchedules", dt.AsTableValuedParameter("dbo.ClassScheduleTVP"));
             await _db.SaveBulkData("spSchedule_BulkInsert", parameters);
         }
-            
+
+        public Task<IEnumerable<JoinedClassScheduleDataDTO>> GetAllJoinedClassesBySemesterInstanceId(int SemesterInstanceId)
+        {
+            return _db.LoadData<JoinedClassScheduleDataDTO, dynamic>(storedProcedure: "spClassSchedule_GetJoinedDataBySemesterId", new {SemesterInstanceId});
+        }
     }
 }

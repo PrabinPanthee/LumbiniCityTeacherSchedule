@@ -93,7 +93,7 @@ namespace LumbiniCityTeacherSchedule.Controllers
                     }
                 }
 
-                await _db.Create(config);
+                
                 return Ok("SucessFully Created");
             }
 

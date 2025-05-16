@@ -9,5 +9,8 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.ClassScheduleData
         Task<IEnumerable<ClassScheduleData>> GetAll();
         Task<IEnumerable<ClassScheduleWithTimeSlotDTO>> GetAllWithTimeSlot();
         Task BulkInsert(List<ClassSchedule> classSchedules);
+        Task <IEnumerable<JoinedClassScheduleDataDTO>> GetAllJoinedClassesBySemesterInstanceId(int SemesterInstanceId);
+
+        
     }
 }

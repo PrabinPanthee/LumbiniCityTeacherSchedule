@@ -1,0 +1,86 @@
+﻿@model LumbiniCityTeacherSchedule.Models.ViewModel.CreateSemesterInstanceVM
+@{
+    ViewData["Title"] = "Activate Semester Instance";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient py-3">
+        <h2 class="text-white text-center">Activate Semester Instance</h2>
+    </div>
+
+    <div class="card-body p-4">
+        @* Display validation or error messages *@
+        @if (!string.IsNullOrEmpty(ViewBag.Error as string))
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @ViewBag.Error
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        <form asp-action="Create" method="post">
+
+            @if (!ViewData.ModelState.IsValid && ViewData.ModelState.Values.Any(v => v.Errors.Count > 0))
+            {
+                <div class="alert alert-danger">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div>@error.ErrorMessage</div>
+                    }
+                </div>
+            }
+            <div class="mb-3">
+                <label asp-for="ProgramList" class="form-label">Program</label>
+                <select id="programSelect" class="form-select" required>
+                    <option disabled selected value="">-- Select Program --</option>
+                    @foreach (var program in Model.ProgramList)
+                    {
+                        <option value="@program.ProgramId">@program.ProgramName</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Semester</label>
+                <select asp-for="SemesterId" id="semesterSelect" name="SemesterId" class="form-select" required>
+                    <option disabled selected value="">-- Select Semester --</option>
+                </select>
+                <span asp-validation-for="SemesterId" class="text-danger"></span>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-check-circle"></i> Activate Semester
+                </button>
+                <a asp-action="Index" class="btn btn-secondary w-100 mt-2">
+                    <i class="bi bi-arrow-left-circle"></i> Back to List
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#programSelect').change(function () {
+                var programId = $(this).val();
+                $('#semesterSelect').html('<option disabled selected>Loading...</option>');
+                $.get('/Admin/SemesterInstance/GetSemesters', { programId: programId }, function (response) {
+                    if (response.success) {
+                        var options = '<option disabled selected value="">-- Select Semester --</option>';
+                        response.data.forEach(function (semester) {
+                            options += `<option value="${semester.semesterId}">Semester: ${semester.semesterNumber}</option>`;
+                        });
+                        $('#semesterSelect').html(options);
+                    } else {
+                        alert(response.message);
+                        $('#semesterSelect').html('<option disabled selected value="">-- Select Semester --</option>');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <partial name="_ValidationScriptsPartial" />
+}

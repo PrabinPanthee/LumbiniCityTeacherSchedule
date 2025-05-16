@@ -73,7 +73,7 @@ namespace LumbiniCityTeacherSchedule.Controllers
                 {
                     return BadRequest("Semester Data is Required");
                 }
-                await _semesterData.Create(semester);
+                
                 return Ok("SucessFully Created");
             }
             catch (Exception ex)

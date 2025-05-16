@@ -7,8 +7,8 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.SemesterInstanceData
     {
         Task Create(CreateSemesterInstanceDto instanceDto);
         Task<SemesterInstance?> GetActiveInstanceBySemesterId(int SemesterId);
-        Task<IEnumerable<SemesterInstance>> GetAll();
-        Task Update(int InstanceId, UpdateSemesterInstanceDto updateDto);
+        Task<IEnumerable<JoinedSemesterInstanceDto>> GetAll();
+        Task Update(UpdateSemesterInstanceDto updateDto);
         Task<SemesterInstance?> Get(int SemesterInstanceId);
     }
 }

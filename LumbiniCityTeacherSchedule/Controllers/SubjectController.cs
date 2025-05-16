@@ -137,7 +137,7 @@ namespace LumbiniCityTeacherSchedule.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _db.Update(SubjectId, dto);
+              
                 return Ok("Updated Successfully");
 
             } 

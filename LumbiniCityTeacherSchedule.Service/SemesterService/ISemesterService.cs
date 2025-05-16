@@ -10,5 +10,6 @@ namespace LumbiniCityTeacherSchedule.Service.SemesterService
         Task<ServiceResult<Semester>> GetSemesterById(int SemesterId);
         Task<ServiceResult> Delete(int  SemesterId);
         Task<ServiceResult> Create(SemesterDTO Semester);
+        Task<ServiceResult<IEnumerable<Semester>>> GetAllActiveSemesterByProgramId(int ProgramId);
     }
 }

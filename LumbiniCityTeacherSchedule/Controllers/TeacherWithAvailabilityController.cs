@@ -115,7 +115,7 @@ namespace LumbiniCityTeacherSchedule.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _db.Create(teacherWithAvailability);
+              
                 return Ok("Created SuccessFully");
             }
             catch (Exception ex)
@@ -199,7 +199,7 @@ namespace LumbiniCityTeacherSchedule.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _db.Update(TeacherId, teacherWithAvailability);
+               
                 return Ok("Updated Successfully");
 
             }

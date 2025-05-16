@@ -1,0 +1,67 @@
+﻿@model IEnumerable<LumbiniCityTeacherSchedule.Models.DTO.JoinedTeacherAssignmentBySubjectDTO>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-bordered table-striped align-middle text-center">
+        <thead class="table-light">
+            <tr>
+                <th>Subject Name</th>
+                <th>Subject Code</th>
+                <th>Assigned Teacher</th>
+                <th>Number of Classes</th>
+                @if(User.IsInRole(SD.Role_Admin)){
+                    <th>Action</th>
+                }
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.SubjectName</td>
+                    <td>@item.SubjectCode</td>
+                    <td>
+                        @if (string.IsNullOrEmpty(item.FirstName))
+                        {
+                            <span class="text-danger fw-bold">Not Assigned</span>
+                        }
+                        else
+                        {
+                            <span class="text-success">@item.FirstName @item.LastName</span>
+                        }
+                    </td>
+                    <td>@(item.FirstName == null ? "-" : item.NumberOfClasses.ToString())</td>
+                    @if (User.IsInRole(SD.Role_Admin)){
+                        <td>
+                        @if (string.IsNullOrEmpty(item.FirstName))
+                        {
+                            <a asp-action="Assign"
+                               asp-route-subjectId="@item.SubjectId"
+                               class="btn btn-sm btn-primary">
+                                <i class="bi bi-person-plus"></i> Assign
+                            </a>
+                        }
+                        else
+                        {
+                            <button class="btn btn-sm btn-secondary" disabled>
+                                <i class="bi bi-check-circle"></i> Assigned
+                            </button>
+                        }
+                    </td>
+
+                    }
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning text-center">
+        No subjects found for this semester. Please
+        <a class="fw-bold" href="/Program/Index">complete semester setup</a> to assign teachers.
+    </div>
+}
+

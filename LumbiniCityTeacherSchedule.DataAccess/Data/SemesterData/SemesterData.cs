@@ -55,6 +55,10 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.SemesterData
             return result == 1;
         }
 
+        public Task<IEnumerable<Semester>> GetAllActiveSemesterByProgramId(int ProgramId)
+        {
+            return _db.LoadData<Semester,dynamic>(storedProcedure: "spSemester_GetAllActiveSemesterByProgramId", new {ProgramId});
+        }
     }
 }
 

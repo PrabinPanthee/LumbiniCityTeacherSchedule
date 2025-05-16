@@ -1,41 +1,73 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - LumbiniCityTeacherScheduleMVC</title>
+    <title>@ViewData["Title"] - Teacher Scheduling System</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/LumbiniCityTeacherScheduleMVC.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom" style="background: linear-gradient(to right, #0f2027, #203a43, #2c5364);">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LumbiniCityTeacherScheduleMVC</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">TeacherSchedule</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-white" asp-area="Department" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-white" asp-area="Department" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            <partial name="_Notification" />
-            @RenderBody()
-        </main>
+
+    <div class="d-flex min-vh-100">
+        <!-- Sidebar -->
+        <div class="bg-dark text-white p-3" style="width: 220px;">
+            <h5>Navigation</h5>
+            <hr style="border-top: 1px solid rgba(255,255,255,0.2);" />
+            <ul class="nav flex-column">
+                @if(User.IsInRole(SD.Role_Admin)){
+                <li class="nav-item"><a class="nav-link text-white" asp-area="admin" asp-controller="Program" asp-action="Index">Programs</a></li>
+                }
+                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Department))
+                {
+                    <li class="nav-item"><a class="nav-link text-white" asp-area="admin" asp-controller="SemesterInstance" asp-action="Index">Semester Instances</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" asp-area="admin" asp-controller="TeacherWithAvailability" asp-action="Index">Teacher Availability</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" asp-area="admin" asp-controller="TeacherAssignment" asp-action="Index">Assignments</a></li>
+                }
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-area="admin" asp-controller="ClassSchedule" asp-action="Index">Schedules</a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex-grow-1 p-4">
+            <main role="main" class="pb-3">
+                <partial name="_Notification" />
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
     <footer class="border-top footer text-muted">
@@ -43,6 +75,7 @@
             &copy; 2025 - LumbiniCityTeacherScheduleMVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

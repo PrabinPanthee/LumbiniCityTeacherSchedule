@@ -3,7 +3,6 @@ using LumbiniCityTeacherSchedule.DataAccess.Data.SemesterData;
 using LumbiniCityTeacherSchedule.DataAccess.Data.SemesterInstanceData;
 using LumbiniCityTeacherSchedule.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
-using System.Xml.Linq;
 
 namespace LumbiniCityTeacherSchedule.Controllers
 {
@@ -100,7 +99,7 @@ namespace LumbiniCityTeacherSchedule.Controllers
                 }
 
                 await _db.Create(dto);
-                return Ok("Created Succesfully");
+                return Ok("Created Successfully");
             }
 
             catch (Exception ex)
@@ -129,15 +128,15 @@ namespace LumbiniCityTeacherSchedule.Controllers
                 }
 
                 
-                if (updateDto.EndDate.Date <= instance.StartDate.Date) {
+                //if (updateDto.EndDate.Date <= instance.StartDate.Date) {
 
-                    ModelState.AddModelError("Date", "Invalid date must be greater than start date");
-                    return BadRequest(ModelState);
+                //    ModelState.AddModelError("Date", "Invalid date must be greater than start date");
+                //    return BadRequest(ModelState);
 
-                }
-                await _db.Update(SemesterInstanceId, updateDto);
+                //}
+                
 
-                return Ok("Updated succesfully");
+                return Ok("Updated successfully");
 
 
             }

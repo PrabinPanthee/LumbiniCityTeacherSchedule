@@ -26,7 +26,7 @@ BEGIN
         WHERE SemesterInstanceId = @SemesterInstanceId;
 
         -- Validate EndDate
-        IF @EndDate <= @StartDate
+        IF @EndDate < @StartDate
         BEGIN
             RAISERROR('EndDate must be after StartDate.', 16, 1);
             ROLLBACK TRANSACTION;

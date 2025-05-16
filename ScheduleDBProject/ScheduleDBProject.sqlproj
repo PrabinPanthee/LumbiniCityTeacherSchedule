@@ -137,6 +137,9 @@
     <Build Include="dbo\Stored_Procedure\spSemester_DuplicateSemesterNumber.sql" />
     <Build Include="dbo\Stored_Procedure\spIsSemesterActive.sql" />
     <Build Include="dbo\Stored_Procedure\spTeacherAssignment_GetAllJoinedTeacherAssignmetBySemesterId.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemesterInstance_GetAllJoinedActiveData.sql" />
+    <Build Include="dbo\Stored_Procedure\spClassSchedule_GetJoinedDataBySemesterId.sql" />
+    <Build Include="dbo\Stored_Procedure\spSemester_GetAllActiveSemesterByProgramId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocation\ScheduleDBProject.publish.xml" />

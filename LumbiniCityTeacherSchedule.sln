@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LumbiniCityTeacherSchedule.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LumbiniCityTeacherScheduleMVC", "LumbiniCityTeacherScheduleMVC\LumbiniCityTeacherScheduleMVC.csproj", "{4B094D72-17DF-409A-A63A-8206DE435A9B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LumbiniCityTeacherScheduleMVC.Identity", "LumbiniCityTeacherScheduleMVC.Identity\LumbiniCityTeacherScheduleMVC.Identity.csproj", "{E52DB6FA-8C7E-453E-8B49-CD8F28FA5A2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{4B094D72-17DF-409A-A63A-8206DE435A9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B094D72-17DF-409A-A63A-8206DE435A9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B094D72-17DF-409A-A63A-8206DE435A9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E52DB6FA-8C7E-453E-8B49-CD8F28FA5A2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E52DB6FA-8C7E-453E-8B49-CD8F28FA5A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E52DB6FA-8C7E-453E-8B49-CD8F28FA5A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E52DB6FA-8C7E-453E-8B49-CD8F28FA5A2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

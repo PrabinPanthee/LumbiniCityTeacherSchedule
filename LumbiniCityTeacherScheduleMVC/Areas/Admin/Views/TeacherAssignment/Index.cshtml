@@ -1,0 +1,85 @@
+﻿@model LumbiniCityTeacherSchedule.Models.ViewModel.TeacherAssignmentViewModel
+
+@{
+    ViewData["Title"] = "Teacher Assignment";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient py-3">
+        <h2 class="text-white text-center">Teacher Assignment</h2>
+    </div>
+
+    <div class="card-body p-4">
+        @* Error Message *@
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @Model.ErrorMessage
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        @* Filter Section *@
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label class="form-label">Program</label>
+                <select id="programSelect" class="form-select">
+                    @foreach (var program in Model.Programs)
+                    {
+                        var selected = program.ProgramId == Model.SelectedProgramId ? "selected=\"selected\"" : "";
+                        @Html.Raw($"<option value=\"{program.ProgramId}\" {selected}>{program.ProgramName}</option>")
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Semester</label>
+                <select id="semesterSelect" class="form-select">
+                    @foreach (var semester in Model.Semesters)
+                    {
+                        var selected = semester.SemesterId == Model.SelectedSemesterId ? "selected=\"selected\"" : "";
+                        @Html.Raw($"<option value=\"{semester.SemesterId}\" {selected}>Semester:{semester.SemesterNumber}</option>")
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div id="assignmentTableContainer">
+            @await Html.PartialAsync("_AssignmentTable", Model.Assignments)
+        </div>
+
+        <div class="mt-4">
+            <a asp-controller="Program" asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Back to Programs
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#programSelect').change(function () {
+                var programId = $(this).val();
+                $.get('/admin/TeacherAssignment/GetSemesters', { programId: programId }, function (response) {
+                    if (response.success) {
+                        var options = '';
+                        response.data.forEach(function (semester) {
+                            options += `<option value="${semester.semesterId}">Semester:${semester.semesterNumber}</option>`;
+                        });
+                        $('#semesterSelect').html(options).trigger('change');
+                    } else {
+                        alert(response.message);
+                    }
+                });
+            });
+
+            $('#semesterSelect').change(function () {
+                var semesterId = $(this).val();
+                $.get('/admin/TeacherAssignment/GetAssignments', { semesterId: semesterId }, function (html) {
+                    $('#assignmentTableContainer').html(html);
+                });
+            });
+        });
+    </script>
+}
+

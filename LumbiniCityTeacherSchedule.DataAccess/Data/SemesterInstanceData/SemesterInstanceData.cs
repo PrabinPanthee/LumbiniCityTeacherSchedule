@@ -18,9 +18,9 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.SemesterInstanceData
             _dataAccess = dataAccess;
         }
 
-        public Task<IEnumerable<SemesterInstance>> GetAll()
+        public Task<IEnumerable<JoinedSemesterInstanceDto>> GetAll()
         {
-            return _dataAccess.LoadData<SemesterInstance, dynamic>(storedProcedure: "spSemesterInstance_GetAllActiveSemester", new { });
+            return _dataAccess.LoadData<JoinedSemesterInstanceDto, dynamic>(storedProcedure: "spSemesterInstance_GetAllJoinedActiveData", new { });
 
         }
 
@@ -46,9 +46,9 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.SemesterInstanceData
                 instanceDto.StartDate
             });
 
-        public Task Update(int SemesterInstanceId, UpdateSemesterInstanceDto updateDto)
+        public Task Update(UpdateSemesterInstanceDto updateDto)
         {
-            return _dataAccess.SaveData(storedProcedure: "spSemesterInstance_Update", new { SemesterInstanceId, updateDto.EndDate });
+            return _dataAccess.SaveData(storedProcedure: "spSemesterInstance_Update", new { updateDto.SemesterInstanceId, updateDto.EndDate });
         }
 
     }

@@ -50,6 +50,21 @@ namespace LumbiniCityTeacherSchedule.Service.SemesterService
             return ServiceResult.Ok("Deleted Successfully");
         }
 
+        public async Task<ServiceResult<IEnumerable<Semester>>> GetAllActiveSemesterByProgramId(int ProgramId)
+        {
+            var program = await _programData.Get(ProgramId);
+            if (program == null)
+            {
+                ServiceResult<IEnumerable<Semester>>.Fail("The program does not exist");
+            }
+            var result = await _db.GetAllActiveSemesterByProgramId(ProgramId);
+            if (result == null || !result.Any())
+            {
+                return ServiceResult<IEnumerable<Semester>>.Fail($"The data for {program!.ProgramName} not found.");
+            }
+            return ServiceResult<IEnumerable<Semester>>.Ok(result, "Retrieved all data");
+        }
+
         public Task<ServiceResult<Semester>> GetSemesterById(int SemesterId)
         {
             throw new NotImplementedException();

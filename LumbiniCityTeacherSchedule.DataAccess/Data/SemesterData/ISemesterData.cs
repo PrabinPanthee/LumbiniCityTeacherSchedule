@@ -12,5 +12,6 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.SemesterData
         Task<IEnumerable<Semester>> GetAllByProgramId(int ProgramId);
         Task<bool> IsNumberExist(int SemesterNumber, int ProgramId);
         Task<bool> IsSemesterActive(int SemesterId);
+        Task<IEnumerable<Semester>> GetAllActiveSemesterByProgramId(int ProgramId);
     }
 }
