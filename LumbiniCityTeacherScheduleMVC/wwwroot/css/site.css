@@ -2,6 +2,52 @@ html {
   font-size: 14px;
 }
 
+/*@media print {
+    nav,
+    .sidebar,
+    footer,
+    .btn,
+    .other-noncontent {
+        display: none !important;
+    }
+
+    .pdf-frame {
+        box-shadow: none;
+        margin: 0;
+        padding: 10mm;
+        border: 2px solid #000;
+        border-radius: 0;
+    }
+
+    body {
+        -webkit-print-color-adjust: exact;
+    }
+}*/
+
+@media print {
+    nav, .sidebar, footer, .btn, .other-noncontent {
+        display: none !important;
+    }
+
+ /*   .pdf-frame {
+        box-shadow: none;
+        margin: 0;
+        padding: 10mm;
+        border: 2px solid #000;
+        border-radius: 0;
+    }*/
+
+    .program-frame {
+        page-break-inside: avoid;
+        border: 1px solid #333 !important;
+        background-color: white !important;
+    }
+
+    body {
+        -webkit-print-color-adjust: exact;
+    }
+}
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -18,5 +64,5 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }

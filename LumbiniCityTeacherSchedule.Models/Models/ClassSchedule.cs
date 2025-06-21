@@ -12,6 +12,6 @@ namespace LumbiniCityTeacherSchedule.Models.Models
         public int SemesterInstanceId { get; set; }
         public int TimeSlotId {  get; set; }
         public int SubjectId {  get; set; }
-        public int TeacherId {  get; set; }
+        public int? TeacherId {  get; set; }
     }
 }

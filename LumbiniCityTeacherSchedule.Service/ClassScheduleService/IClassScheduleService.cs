@@ -8,6 +8,7 @@ namespace LumbiniCityTeacherSchedule.Service.ClassScheduleService
     {
         Task<ServiceResult> GenerateClassSchedule(int SemesterInstanceId);
         Task<ServiceResult<IEnumerable<JoinedClassScheduleDataDTO>>> GetAllBySemesterId(int semesterId);
+        Task<ServiceResult<IEnumerable<ClassSchedulePDFDto>>> GetAllDataForPDF();
     }
 
     

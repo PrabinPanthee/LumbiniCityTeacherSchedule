@@ -89,13 +89,18 @@ namespace LumbiniCityTeacherSchedule.Service.ClassScheduleService
 
             //store available slot for each teacher 
             var teacherAvailableSlots = new List<(int subjectId, int teacherId, List<int> slotIds)>();
+            var leftOverSubject = new List<int>();
 
             var finalSchedule = new List<ClassSchedule>();
             foreach (var subject in subjectData)
             {
                 var assignment = teacherAssignmentData.FirstOrDefault(a => a.SubjectId == subject.SubjectId);
                 if (assignment == null || !teacherAvailabilityMap.ContainsKey(assignment.TeacherId))
+                {
+                    leftOverSubject.Add(subject.SubjectId);
                     continue;
+                }
+                    
 
                 var teacherData = teacherAvailabilityMap[assignment.TeacherId];
 
@@ -111,11 +116,16 @@ namespace LumbiniCityTeacherSchedule.Service.ClassScheduleService
                 {
                     teacherAvailableSlots.Add((subject.SubjectId, assignment.TeacherId, availableSlotIds));
                 }
+                else
+                {
+                    leftOverSubject.Add(subject.SubjectId);
+                }
             }
             //least flexible first + greedy algorithm 
             var sortedTeacher = teacherAvailableSlots.OrderBy(t => t.slotIds.Count).ToList();
             foreach (var (subjectId, teacherId, slotIds) in sortedTeacher)
             {
+                bool assigned = false;
                 foreach (var slotId in slotIds)
                 {
                     bool alreadyTaken = existingSchedules.Any(s => s.TimeSlotId == slotId &&
@@ -135,15 +145,49 @@ namespace LumbiniCityTeacherSchedule.Service.ClassScheduleService
                         {
                             SemesterInstanceId = SemesterInstanceId,
                             TimeSlotId = slotId,
+                            SubjectId = subjectId,
                             TeacherId = teacherId,
                             StartTime = slot.StartTime,
                             EndTime = slot.EndTime
                         });
+                        assigned = true;
                         break;
                     }
 
                 }
+                if (!assigned)
+                {
+                    // Teacher had slots, but all were unavailable
+                    leftOverSubject.Add(subjectId);
+                }
+            }
 
+
+                foreach (var subjectId in leftOverSubject)
+                 {
+                var freeSlot = timeSlotData.FirstOrDefault(slot =>
+                !existingSchedules.Any(s => s.SemesterInstanceId == SemesterInstanceId && 
+                s.TimeSlotId == slot.TimeSlotId ));
+                if(freeSlot != null)
+                {
+                    finalSchedule.Add(new ClassSchedule
+                    {
+                        SemesterInstanceId = SemesterInstanceId,
+                        SubjectId = subjectId,
+                        TeacherId = null,
+                        TimeSlotId = freeSlot.TimeSlotId,
+
+                    });
+                    existingSchedules.Add(new ClassScheduleWithTimeSlotDTO
+                    {
+                        SemesterInstanceId = SemesterInstanceId,
+                        SubjectId = subjectId,
+                        TimeSlotId = freeSlot.TimeSlotId,
+                        TeacherId = null,
+                        StartTime = freeSlot.StartTime,
+                        EndTime = freeSlot.EndTime
+                    });
+                }
             }
             if (!finalSchedule.Any())
             {
@@ -171,7 +215,7 @@ namespace LumbiniCityTeacherSchedule.Service.ClassScheduleService
 
                 bool isAlreadySchedule = existingSchedules.Any
                                             (
-                                                s => s.TeacherId == teacherId
+                                               s => s.TeacherId.HasValue && s.TeacherId.Value == teacherId
                                                 && !(s.EndTime <= slot.StartTime || s.StartTime >= slot.EndTime)
 
                                             );
@@ -209,6 +253,15 @@ namespace LumbiniCityTeacherSchedule.Service.ClassScheduleService
             return ServiceResult<IEnumerable<JoinedClassScheduleDataDTO>>.Ok(scheduleData,"Fetched successfully");
         }
 
+        public async Task<ServiceResult<IEnumerable<ClassSchedulePDFDto>>> GetAllDataForPDF()
+        {
+            var pdfData = await _classSchedule.GetAllJoinedDataForPDF();
+            if(pdfData == null || !pdfData.Any())
+            {
+                return ServiceResult<IEnumerable<ClassSchedulePDFDto>>.Fail("No data found ");
+            }
+            return ServiceResult<IEnumerable<ClassSchedulePDFDto>>.Ok(pdfData, "Fetched successfully");
+        }
     }
 }
 

@@ -1,8 +1,145 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<LumbiniCityTeacherSchedule.Models.DTO.ClassSchedulePDFDto>
+
+<style>
+  /*   .pdf-frame {
+        border: 2px double #2c3e50;
+        padding: 20px;
+        margin: 10px auto;
+        border-radius: 5px;
+        background-color: #ffffff;
+        max-width: 1000px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    } */
+
+    .program-frame {
+        border: 2px dashed #7f8c8d;
+        padding: 16px;
+        border-radius: 6px;
+        margin-bottom: 25px;
+        background-color: #fafafa;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.03);
+    }
+
+    h1 {
+        color: #2c3e50;
+        font-weight: 500;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    h2 {
+        color: #34495e;
+        font-size: 1.2rem;
+        margin-top: 0.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+        font-size: 0.95rem;
+    }
+
+    th {
+        background-color: #ecf0f1;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .text-muted {
+        color: #7f8c8d;
+        font-size: 0.85rem;
+    }
+
+</style>
+
+@{
+    var groupedByProgram = Model
+        .GroupBy(m => m.ProgramName)
+        .ToList();
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@* <div class="pdf-frame"> *@
+
+    <div class="d-flex justify-content-center align-items-center my-4">
+        <h1 class="text-center flex-grow-1">Lumbini City Schedule</h1>
+        <button class="btn btn-primary ms-3" onclick="window.print()">Print</button>
+    </div>
+
+    @foreach (var programGroup in groupedByProgram)
+    {
+        <div class="program-frame">
+
+            <h2>@programGroup.Key</h2>
+
+            @{
+                var semesters = programGroup
+                .GroupBy(s => new { s.SemesterInstanceId })
+                .ToList();
+            }
+
+            @foreach (var semesterGroup in semesters)
+            {
+                var timeSlots = semesterGroup
+                .OrderBy(ts => ts.StartTime)
+                .Select(ts => new
+                {
+                    ts.TimeSlotId,
+                    Label = $"{ts.StartTime.ToString("hh\\:mm tt")} - {ts.EndTime.ToString("hh\\:mm tt")}"
+                })
+                .Distinct()
+                .ToList();
+
+                <div class="mt-2">
+                    <strong>Semester @semesterGroup.First().SemesterNumber</strong>
+                    <span class="text-muted">
+                        (Effective From: @semesterGroup.First().StartDate.ToString("MMMM dd, yyyy"))
+                    </span>
+
+                    <table class="table table-bordered table-sm text-center align-middle mt-2">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Program / Time</th>
+                                @foreach (var slot in timeSlots)
+                                {
+                                    <th style="font-size: 0.85rem; color: #555;">@slot.Label</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @programGroup.Key.Split(" ").Last() - Semester @semesterGroup.First().SemesterNumber
+                                </td>
+                                @foreach (var slot in timeSlots)
+                                {
+                                    var entry = semesterGroup
+                                    .FirstOrDefault(e => e.TimeSlotId == slot.TimeSlotId);
+
+                                    if (entry == null || entry.Type == "break")
+                                    {
+                                        <td><strong>Break</strong></td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <div><strong>@entry.SubjectCode</strong> - @entry.SubjectName</div>
+                                            <div class="text-muted" style="font-size: smaller;">@entry.TeacherName</div>
+                                        </td>
+                                    }
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    }
+@* </div> *@

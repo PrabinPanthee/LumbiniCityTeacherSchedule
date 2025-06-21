@@ -2,12 +2,8 @@
 using LumbiniCityTeacherSchedule.DataAccess.DbAccess;
 using LumbiniCityTeacherSchedule.Models.DTO;
 using LumbiniCityTeacherSchedule.Models.Models;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace LumbiniCityTeacherSchedule.DataAccess.Data.ClassScheduleData
 {
@@ -51,6 +47,11 @@ namespace LumbiniCityTeacherSchedule.DataAccess.Data.ClassScheduleData
         public Task<IEnumerable<JoinedClassScheduleDataDTO>> GetAllJoinedClassesBySemesterInstanceId(int SemesterInstanceId)
         {
             return _db.LoadData<JoinedClassScheduleDataDTO, dynamic>(storedProcedure: "spClassSchedule_GetJoinedDataBySemesterId", new {SemesterInstanceId});
+        }
+
+        public Task<IEnumerable<ClassSchedulePDFDto>> GetAllJoinedDataForPDF()
+        {
+            return _db.LoadData<ClassSchedulePDFDto, dynamic>(storedProcedure: "spClassSchedule_GetAllDataForPDF", new { });
         }
     }
 }

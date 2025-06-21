@@ -140,6 +140,7 @@
     <Build Include="dbo\Stored_Procedure\spSemesterInstance_GetAllJoinedActiveData.sql" />
     <Build Include="dbo\Stored_Procedure\spClassSchedule_GetJoinedDataBySemesterId.sql" />
     <Build Include="dbo\Stored_Procedure\spSemester_GetAllActiveSemesterByProgramId.sql" />
+    <Build Include="dbo\Stored_Procedure\spClassSchedule_GetAllDataForPDF.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocation\ScheduleDBProject.publish.xml" />

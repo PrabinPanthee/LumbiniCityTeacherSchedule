@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+   @*  @RenderSection("Styles", required: false) *@
     
 </head>
 <body>
@@ -39,7 +40,7 @@
 
     <div class="d-flex min-vh-100">
         <!-- Sidebar -->
-        <div class="bg-dark text-white p-3" style="width: 220px;">
+        <div class="sidebar bg-dark text-white p-3" style="width: 220px;">
             <h5>Navigation</h5>
             <hr style="border-top: 1px solid rgba(255,255,255,0.2);" />
             <ul class="nav flex-column">
@@ -62,7 +63,7 @@
         </div>
 
         <!-- Main content -->
-        <div class="flex-grow-1 p-4">
+        <div class="flex-grow-1 pt- px-3 pb-3">
             <main role="main" class="pb-3">
                 <partial name="_Notification" />
                 @RenderBody()
